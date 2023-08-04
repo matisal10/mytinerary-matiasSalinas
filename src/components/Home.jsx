@@ -1,26 +1,15 @@
 import { useState } from 'react'
 import '../App.css'
-import { Button, ButtonGroup, Image } from '@chakra-ui/react'
-import {
-    BrowserRouter as Router,
-    Link,
-} from "react-router-dom";
+import { Button, Image } from '@chakra-ui/react'
+import Navbar from './Navbar/Navbar';
 
 
 function Home() {
-    const [count, setCount] = useState(0)
 
     return (
         <>
             <header>
-                <nav className="navbar">
-                    <h1 className="logo">My Tinerary</h1>
-                    <ul className="nav-links">
-                        <li><Link to="/ ">Home</Link></li>
-                        <li><Link to="/cities" style={{ padding: "0px 1rem" }}>Cities</Link></li>
-                        <li><Button colorScheme='facebook'>  Login</Button></li>
-                    </ul>
-                </nav>
+                <Navbar/>
             </header>
             <main>
                 <article className="hero">

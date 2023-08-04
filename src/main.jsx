@@ -9,28 +9,27 @@ import { Global, css } from "@emotion/react";
 import { ChakraProvider } from '@chakra-ui/react'
 import { extendTheme } from '@chakra-ui/react'
 
-import SegoeUI from "./assets/segoe-ui-4-cufonfonts/SegoeUI.ttf";
+// import SegoeUI from "./assets/segoe-ui-4-cufonfonts/SegoeUI.ttf";
 
-const theme = extendTheme({
-  styles: {
-    global: (props) => ({
-      body: {
-        fontFamily: "SegoeUI, sans-serif",
-      },
-    }),
-  },
-})
+// const theme = extendTheme({
+//   styles: {
+//     global: (props) => ({
+//       body: {
+//         fontFamily: "SegoeUI, sans-serif",
+//       },
+//     }),
+//   },
+// })
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <ChakraProvider theme={theme}>
+    <ChakraProvider >
       <Router>
         <App />
       </Router>
 
-      <Global
+      {/* <Global
         styles={css`
-          /* URL de la fuente local */
           @font-face {
             font-family: "MiFuente";
             src: url(${SegoeUI}) format("truetype");
@@ -38,7 +37,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             font-style: normal;
           }
         `}
-      />
+      /> */}
     </ChakraProvider>
   </React.StrictMode>,
 )

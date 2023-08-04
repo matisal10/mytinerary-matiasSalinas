@@ -1,0 +1,18 @@
+/* Navbar.css */
+.navbar {
+    background-color: white;
+    color: black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 8rem;
+    width: 100%;
+}
+
+.navbar>h1 {
+    font-family: Segoe UI;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
