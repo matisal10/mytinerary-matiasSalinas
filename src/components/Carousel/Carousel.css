@@ -4,6 +4,7 @@
     position: relative;
     border-radius: 25px;
     display: flex;
+    height: 600px;
 }
 
 .carousel-inner {
@@ -19,7 +20,7 @@
     justify-content: space-evenly;
     padding: 5px;
     flex-direction: column;
-    height: 600px;
+    /* height: 600px; */
     align-items: center;
 }
 
@@ -31,7 +32,7 @@
     align-items: center;
     border-radius: 10px;
     /* padding: 5px; */
-    box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.75);
 }
 
 .carousel-container {
@@ -45,8 +46,8 @@
     width: 100%;
     height: auto;
     max-width: 360px;
-    max-height: 255px; 
-    object-fit: cover; 
+    max-height: 255px;
+    object-fit: cover;
     border-radius: 10px;
 }
 
@@ -92,10 +93,46 @@
     right: 10px;
 }
 
-
-
 h2 {
     text-align: center;
     font-size: 24px;
     font-weight: bold;
+}
+
+@media (width < 800px) {
+    .carousel {
+        height: 414px;
+    }
+
+}
+
+@media (width < 600px) {
+
+    .carousel-image {
+        box-shadow: 0px 0px 00px 0px rgba(0, 0, 0, 0.75);
+    }
+
+    .carousel {
+        height: 300px;
+    }
+
+    .carousel Button {
+        height: 26px;
+    }
+
+}
+
+@media (width < 400px) {
+    .carousel-container {
+        max-width: 100%;
+    }
+
+    .carousel {
+        height: 300px;
+    }
+
+    .carousel Button {
+        height: 26px;
+    }
+
 }

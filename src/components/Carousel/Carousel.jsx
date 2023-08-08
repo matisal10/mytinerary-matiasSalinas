@@ -15,7 +15,7 @@ const Carousel = ({ autoPlayInterval = 3000 }) => {
         { name: 'Rio de janeiro', imageUrl: '/assets/rio-de-janeiro-1963744_640.jpg' },
         { name: 'Venecia', imageUrl: '/assets/venice-2451047_640.jpg' },
         { name: 'Praga', imageUrl: '/assets/prague-4794636_1280.jpg' },
-        { name: 'Barcelona', imageUrl: '../../../public/assets/travel-5188598_1280.jpg' },
+        { name: 'Barcelona', imageUrl: '/assets/travel-5188598_1280.jpg' },
         // Add more city objects here...
     ];
 
@@ -30,19 +30,19 @@ const Carousel = ({ autoPlayInterval = 3000 }) => {
         setCurrentSlideIndex((prevIndex) => (prevIndex - 1 + Math.ceil(cities.length / 4)) % Math.ceil(cities.length / 4));
     };
 
-    // useEffect(() => {
-    //     let intervalId;
+    useEffect(() => {
+        let intervalId;
 
-    //     if (isAutoPlaying) {
-    //         intervalId = setInterval(() => {
-    //             setCurrentSlideIndex((prevIndex) => (prevIndex + 1) % Math.ceil(cities.length / 4));
-    //         }, autoPlayInterval);
-    //     }
+        if (isAutoPlaying) {
+            intervalId = setInterval(() => {
+                setCurrentSlideIndex((prevIndex) => (prevIndex + 1) % Math.ceil(cities.length / 4));
+            }, autoPlayInterval);
+        }
 
-    //     return () => {
-    //         clearInterval(intervalId);
-    //     };
-    // }, [isAutoPlaying, cities.length, autoPlayInterval]);
+        return () => {
+            clearInterval(intervalId);
+        };
+    }, [isAutoPlaying, cities.length, autoPlayInterval]);
 
     return (
         <div className="carousel-container">
