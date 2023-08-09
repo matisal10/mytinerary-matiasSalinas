@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import './App.css'
 import { AppRoute } from './Routes/route';
 import Navbar from './components/Navbar/Navbar';
+import Footer from './components/Footer/Footer';
 
 function App() {
 
@@ -40,7 +41,7 @@ function App() {
       </header>
       <AppRoute />
       <footer>
-
+        <Footer/>
       </footer>
     </>
   )
