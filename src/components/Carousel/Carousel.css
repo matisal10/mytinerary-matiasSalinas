@@ -93,11 +93,11 @@
 }
 
 .carousel-btn.prev {
-    left: -7px;
+    left: 0px;
 }
 
 .carousel-btn.next {
-    right: -7px;
+    right: 0px;
 }
 
 h2 {
@@ -109,6 +109,14 @@ h2 {
 @media (width < 800px) {
     .carousel {
         height: 500px;
+    }
+
+    .carousel-btn.prev {
+        left: -7px;
+    }
+    
+    .carousel-btn.next {
+        right: -7px;
     }
 
 }
@@ -135,7 +143,7 @@ h2 {
     }
 
     .carousel {
-        height: 360px;
+        max-height: 360px;
     }
 
     .carousel Button {

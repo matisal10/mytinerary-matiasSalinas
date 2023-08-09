@@ -9,7 +9,7 @@ const Carousel = ({ autoPlayInterval = 3000 }) => {
         { name: 'Capilla del Monte ', imageUrl: '/assets/city3.png' },
         { name: 'Wakatobi', imageUrl: '/assets/city4.png' },
         { name: 'Assisi', imageUrl: '/assets/assisi-city-7150611_1280.jpg' },
-        { name: 'Paris 6', imageUrl: '/assets/eiffel-tower-3349075_640.jpg' },
+        { name: 'Paris ', imageUrl: '/assets/eiffel-tower-3349075_640.jpg' },
         { name: 'Santorini', imageUrl: '/assets/santorini-4996846_1280.jpg' },
         { name: 'hungarian', imageUrl: '/assets/hungarian-parliament-building-6933621_640.jpg' },
         { name: 'Rio de janeiro', imageUrl: '/assets/rio-de-janeiro-1963744_640.jpg' },
