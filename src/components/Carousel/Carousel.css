@@ -108,7 +108,7 @@ h2 {
 
 @media (width < 800px) {
     .carousel {
-        height: 414px;
+        height: 500px;
     }
 
 }
@@ -120,7 +120,7 @@ h2 {
     }
 
     .carousel {
-        height: 340px;
+        height: 370px;
     }
 
     .carousel Button {
@@ -135,7 +135,7 @@ h2 {
     }
 
     .carousel {
-        height: 340px;
+        height: 360px;
     }
 
     .carousel Button {
