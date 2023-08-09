@@ -9,6 +9,10 @@ import './Navbar.css'
 const Navbar = ({ backgroundColor, logoColor }) => {
     const [menuOpen, setMenuOpen] = useState(false);
 
+    const closeMenu = () => {
+        setMenuOpen(false);
+    };
+
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
     };
@@ -26,10 +30,10 @@ const Navbar = ({ backgroundColor, logoColor }) => {
                 </button>
                 <ul className={`nav-links ${menuOpen ? 'active' : ''}`}>
                     <li>
-                        <Link to="/">Home</Link>
+                        <Link to="/" onClick={closeMenu} >Home</Link>
                     </li>
                     <li>
-                        <Link to="/cities" style={{ padding: '0px 1rem' }}>
+                        <Link to="/cities" onClick={closeMenu} style={{ padding: '0px 1rem' }}>
                             Cities
                         </Link>
                     </li>

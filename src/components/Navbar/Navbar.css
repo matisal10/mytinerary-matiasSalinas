@@ -74,15 +74,17 @@
     .nav-links {
         display: none;
         flex-direction: column;
-        width: 100%;
+        width: 30%;
         position: absolute;
         background-color: white;
         top: 100%;
-        left: 0;
+        /* left: 0; */
         opacity: 0;
         transition: 0.3s;
         box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-        margin: 0;
+        margin-top: 7px;
+        right: 3px;
+        border-radius: 8px;
     }
 
     .nav-links.active {
