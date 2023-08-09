@@ -54,7 +54,7 @@ const Carousel = ({ autoPlayInterval = 3000 }) => {
                             {cities.slice(slideIndex * 4, slideIndex * 4 + 4).map((city, index) => (
                                 <div key={index} className="carousel-image">
                                     <img src={city.imageUrl} alt={`Slide ${slideIndex} - Image ${index}`} />
-                                    <div className="city-name-container" style={{width:"100%"}}>
+                                    <div className="city-name-container" style={{ width: "100%" }}>
                                         <p className="city-name">{city.name}</p>
                                     </div>
                                 </div>
@@ -62,11 +62,17 @@ const Carousel = ({ autoPlayInterval = 3000 }) => {
                         </div>
                     ))}
                 </div>
-                <Button className="carousel-btn prev" onClick={handlePrevSlide}>
-                    &lt;
+                <Button className="carousel-btn prev" variant='ghost' onClick={handlePrevSlide}>
+                    <img
+                        src={'/assets/Icons-arrows/icons8-arrow-left.png'}
+                        width={20}
+                    />
                 </Button>
-                <Button className="carousel-btn next" onClick={handleNextSlide}>
-                    &gt;
+                <Button className="carousel-btn next" variant='ghost' onClick={handleNextSlide}>
+                    <img
+                        src={'/assets/Icons-arrows/icons8-arrow-right.png'}
+                        width={20}
+                    />
                 </Button>
             </div>
         </div>
