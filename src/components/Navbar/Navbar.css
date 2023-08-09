@@ -48,6 +48,10 @@
     line-height: normal;
 }
 
+.nav-links li a:hover {
+    color: rgb(125, 146, 153);
+}
+
 .hamburger {
     display: none;
     flex-direction: column;
@@ -97,7 +101,7 @@
         text-align: center;
         margin: 1rem 0;
     }
-    .nav-links li:hover {
+    .nav-links li a:hover {
         color: gray;
     }
 
