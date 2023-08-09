@@ -46,7 +46,7 @@
     align-content: center;
     justify-content: center;
     align-items: center;
-    width: 100vw;
+    width: 100%;
 }
 
 .carousel-slide img {
