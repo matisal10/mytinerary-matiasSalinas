@@ -1,8 +1,7 @@
-import { useState } from 'react'
 import '../App.css'
-import { Button, Image } from '@chakra-ui/react'
-import Navbar from './Navbar/Navbar';
+import { Button } from '@chakra-ui/react'
 import Carousel from './Carousel/Carousel';
+import { Link } from 'react-router-dom';
 
 function Home() {
 
@@ -19,7 +18,7 @@ function Home() {
                                 interface and a host of itinerary options, planning your next trip has never been
                                 easier.
                             </p>
-                            <Button colorScheme="facebook" width="300px">
+                            <Button as={Link} to="/cities" colorScheme="facebook" width="300px" >
                                 View More
                             </Button>
                         </div>
