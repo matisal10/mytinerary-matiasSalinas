@@ -1,0 +1,95 @@
+.heroCities {
+    position: relative;
+    height: 500px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url(assets/houses-4093227_1920.jpg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 8rem;
+    width: 100%;
+}
+
+.hero-Cities {}
+
+.contentCities {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.contentCities>p {
+    margin: 40px 0px;
+    /* padding-right: 115px; */
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    color: white;
+}
+
+
+.containerInput {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    margin: 80px 0px;
+}
+
+.containerCities {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-content: center;
+    align-items: center;
+}
+
+.image-city {
+    max-width: 45%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 10px;
+    padding: 5px;
+    cursor: pointer;
+    transform: scale(var(--escala, 1));
+    transition: transform 0.25s;
+    /* z-index: 1; */
+    /* box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.75); */
+}
+
+.image-city:hover {
+    --escala: 1.2;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.image-city img {
+    width: 100%;
+    height: auto;
+    max-width: 350px;
+    max-height: 237px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.city-name {
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+}
+
+.image-city p {
+    margin-top: -25px;
+    font-size: 16px;
+    font-weight: bold;
+    /* margin-right: 250px; */
+    color: white;
+}
