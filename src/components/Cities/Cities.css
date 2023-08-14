@@ -33,12 +33,22 @@
     color: white;
 }
 
+.containerSection2{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
 
 .containerInput {
-    display: grid;
+    display: flex;
     align-items: center;
     justify-content: center;
     margin: 80px 0px;
+    width: 100%;
+    max-width: 600px;
+    /* flex: 1; */
 }
 
 .containerCities {
@@ -92,4 +102,11 @@
     font-weight: bold;
     /* margin-right: 250px; */
     color: white;
+}
+
+@media (max-width: 768px) {
+    .containerInput {
+        flex-direction: column; /* Stack items vertically */
+        padding: 0px 20px;
+    }
 }

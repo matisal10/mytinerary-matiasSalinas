@@ -53,6 +53,15 @@ header {
   line-height: normal;
   color: white;
 }
+.content > p {
+  margin: 40px 0px;
+  /* padding-right: 115px; */
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  color: white;
+}
 
 /* Media queries for responsive design */
 @media screen and (max-width: 768px) {

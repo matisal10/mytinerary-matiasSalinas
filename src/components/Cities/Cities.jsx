@@ -42,15 +42,15 @@ export default function Cities() {
                     </div>
                 </div>
             </section>
-            <section>
+            <section className='containerSection2'>
                 <div className='containerInput'>
-                    <InputGroup>
+                    <InputGroup >
                         <InputLeftElement pointerEvents='none'>
                             <SearchIcon color='gray.300' />
                         </InputLeftElement>
                         <Input
                             placeholder='Search your city'
-                            width={600}
+                            // width={'100%'}
                             value={searchTerm}
                             onChange={handleSearch}
                         />
