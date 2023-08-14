@@ -1,0 +1,54 @@
+.heroCity {
+    position: relative;
+    height: 1100px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url(assets/tokio.jpg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 8rem;
+    width: 100%;
+}
+
+.contentCity {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.contentCity>p {
+    margin: 40px 0px;
+    /* padding-right: 115px; */
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    color: white;
+}
+
+.containerItineraries{
+    display: flex;
+    align-content: center;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.Itineraries{
+    box-shadow: 3px 4px 4px rgba(0, 0, 0, 0.10);
+    width: 80%;
+    height: 500px;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 70px 0px ;
+    background-color: #EBEBEB;
+    border-radius: 10px;
+}

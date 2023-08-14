@@ -10,29 +10,30 @@ function App() {
   const [logoNavColor, setLogoNavColor] = useState('white');
 
   const handleScroll = () => {
-    const homeSection = document.getElementById('home-section');
+    const scrollPosition = window.scrollY;
+    const triggerPoint = 50;
 
-    if (homeSection) {
-      const scrollPosition = window.scrollY;
-      const homeSectionHeight = homeSection.offsetHeight;
-      const triggerPoint = 50; 
-
-      if (scrollPosition > triggerPoint) {
-        setNavbarColor('#FFF'); 
-        setLogoNavColor('black')
-      } else {
-        setNavbarColor('transparent'); 
-        setLogoNavColor('white')
-      }
+    if (scrollPosition > triggerPoint) {
+      setNavbarColor('#FFF');
+      setLogoNavColor('black');
+    } else {
+      setNavbarColor('transparent');
+      setLogoNavColor('white');
     }
   };
 
+  // Llamar a handleScroll cuando ocurre un evento de desplazamiento en la ventana
+  window.addEventListener('scroll', handleScroll);
+
+  // Asegúrate de eliminar el evento cuando el componente se desmonta
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
 
   return (
     <>
@@ -41,7 +42,7 @@ function App() {
       </header>
       <AppRoute />
       <footer>
-        <Footer/>
+        <Footer />
       </footer>
     </>
   )
