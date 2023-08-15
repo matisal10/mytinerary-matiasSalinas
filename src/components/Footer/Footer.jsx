@@ -3,8 +3,8 @@ import './Footer.css'
 
 const Footer = () => {
     return (
-        <div className='containerFooter'>
-            <div className='containerIcons'>
+        <footer className='containerFooter'>
+            <nav className='containerIcons'>
                 <a href="">
                     <img
                         src={'/assets/Icons-redes/icons8-twitter-48.png'}
@@ -34,10 +34,9 @@ const Footer = () => {
                         style={{ marginRight: '5px' }}
                     />
                 </a>
-
-            </div>
-            <div>©2023 Matias Salinas </div>
-        </div>
+            </nav>
+            <div>©2023 Matias Salinas</div>
+        </footer>
     );
 }
 
