@@ -10,6 +10,7 @@
     justify-content: center;
     padding: 1rem 8rem;
     width: 100%;
+    filter: brightness(1.2);
 }
 
 .hero-Cities {}
@@ -22,7 +23,11 @@
     justify-content: center;
     align-items: center;
 }
-
+.contentCities>h1 {
+    
+    color: rgb(101 163 255);
+    font-weight: bold;
+}
 .contentCities>p {
     margin: 40px 0px;
     /* padding-right: 115px; */
@@ -57,6 +62,7 @@
     justify-content: space-around;
     align-content: center;
     align-items: center;
+    width: 100%;
 }
 
 .image-city {
@@ -82,8 +88,10 @@
 .image-city img {
     width: 100%;
     height: auto;
+    min-width: 350px;
     max-width: 350px;
     max-height: 237px;
+    min-height: 237px;
     object-fit: cover;
     border-radius: 10px;
 }

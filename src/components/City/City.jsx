@@ -1,25 +1,12 @@
-import  { useRef }from 'react';
+import { useRef, useState, useEffect } from 'react';
 import './City.css'
 import { Button } from '@chakra-ui/react'
+import { useParams } from 'react-router-dom';
 const City = () => {
 
+    const [city, setCity] = useState();
     const itinerariesRef = useRef(null);
-
-    const cities = [
-        { name: 'Neo Tokio', imageUrl: '/assets/city1.png' },
-        { name: 'Buenos Aires', imageUrl: '/assets/city2.png' },
-        { name: 'Capilla del Monte ', imageUrl: '/assets/city3.png' },
-        { name: 'Wakatobi', imageUrl: '/assets/city4.png' },
-        { name: 'Assisi', imageUrl: '/assets/assisi-city-7150611_1280.jpg' },
-        { name: 'Paris ', imageUrl: '/assets/eiffel-tower-3349075_640.jpg' },
-        { name: 'Santorini', imageUrl: '/assets/santorini-4996846_1280.jpg' },
-        { name: 'hungarian', imageUrl: '/assets/hungarian-parliament-building-6933621_640.jpg' },
-        { name: 'Rio de janeiro', imageUrl: '/assets/rio-de-janeiro-1963744_640.jpg' },
-        { name: 'Venecia', imageUrl: '/assets/venice-2451047_640.jpg' },
-        { name: 'Praga', imageUrl: '/assets/prague-4794636_1280.jpg' },
-        { name: 'Barcelona', imageUrl: '/assets/travel-5188598_1280.jpg' },
-        // Add more city objects here...
-    ];
+    const { id } = useParams();
 
     const scrollToItineraries = () => {
         if (itinerariesRef.current) {
@@ -27,16 +14,37 @@ const City = () => {
                 behavior: 'smooth',
             });
         }
-    };
+    }; 
 
+    const getCity= async() => {
+        try {
+            const response = await fetch(`http://localhost:4000/api/cities/${id}`);
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+            setCity(data.response);
+            console.log(data.response); // Log the data directly here
+        } catch (error) {
+            console.error('Error fetching cities:', error);
+        }
+    }
+
+
+    useEffect(() => {
+        getCity();
+        console.log(city)
+    }, []);
 
     return (
         <>
-            <section className="heroCity">
+            <section className="heroCity" style={{backgroundImage: city? `url(${city.cover})` : 'none'}}>
                 <div className="hero-background">
                     {/* Content inside the hero section */}
                     <div className="contentCity">
-                        <h1 style={{ color: '#ffbc40' }}>Cities</h1>
+                        <h1 style={{ color: '#ffbc40', fontWeight: '700' }}>{city && city.name }</h1>
                         <p>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque lobortis ante sapien, non vulputate lorem faucibus vitae. Nunc ac ultrices metus. Nam neque ex, dictum sed velit vitae, vehicula sagittis risus. Aenean volutpat ante ex, et scelerisque dui blandit sed. Morbi pretium lorem nec scelerisque consectetur. Donec odio odio, maximus nec magna sed, congue hendrerit sapien.
                         </p>

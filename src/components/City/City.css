@@ -4,12 +4,13 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-image: url(assets/tokio.jpg);
+    /* background-image: url(assets/tokio.jpg); */
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 1rem 8rem;
-    width: 100%;
+    width: 100%;    
+    filter: brightness(1);
 }
 
 .contentCity {
