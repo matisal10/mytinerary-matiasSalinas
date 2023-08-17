@@ -48,7 +48,7 @@ const City = () => {
                         <p>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque lobortis ante sapien, non vulputate lorem faucibus vitae. Nunc ac ultrices metus. Nam neque ex, dictum sed velit vitae, vehicula sagittis risus. Aenean volutpat ante ex, et scelerisque dui blandit sed. Morbi pretium lorem nec scelerisque consectetur. Donec odio odio, maximus nec magna sed, congue hendrerit sapien.
                         </p>
-                        <Button colorScheme="facebook" width="300px" onClick={scrollToItineraries}>View Itineraries ↓</Button>
+                        <Button colorScheme="facebook" className='btn-Itineraries' onClick={scrollToItineraries}>View Itineraries ↓</Button>
                     </div>
                 </div>
             </section>

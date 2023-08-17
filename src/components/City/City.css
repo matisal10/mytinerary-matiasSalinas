@@ -53,3 +53,21 @@
     background-color: #EBEBEB;
     border-radius: 10px;
 }
+
+.btn-Itineraries{
+    width: 300px;
+}
+
+@media (width < 700px) {
+    .heroCity{
+        padding: 1rem 2rem;
+    }
+}
+
+
+@media (width < 450px) {
+    .btn-Itineraries {
+        width: 200px;
+    }
+}
+
