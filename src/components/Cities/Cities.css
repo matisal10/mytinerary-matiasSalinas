@@ -114,7 +114,7 @@
 
 @media (max-width: 768px) {
     .containerInput {
-        flex-direction: column; /* Stack items vertically */
+        flex-direction: column; 
         padding: 0px 20px;
     }
     
