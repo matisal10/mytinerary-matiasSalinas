@@ -1,13 +1,15 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import {
     BrowserRouter as Router,
-        Link,
+    Link,
+    useNavigate
 } from "react-router-dom";
 import { Button } from '@chakra-ui/react'
 import './Navbar.css'
 
 const Navbar = ({ backgroundColor, logoColor }) => {
     const [menuOpen, setMenuOpen] = useState(false);
+    const navigate = useNavigate();
 
     const closeMenu = () => {
         setMenuOpen(false);
@@ -15,6 +17,10 @@ const Navbar = ({ backgroundColor, logoColor }) => {
 
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
+    };
+
+    const redirectToLogin = () => {
+        navigate('/login');
     };
 
     return (
@@ -38,7 +44,7 @@ const Navbar = ({ backgroundColor, logoColor }) => {
                         </Link>
                     </li>
                     <li>
-                        <Button colorScheme="facebook">
+                        <Button onClick={redirectToLogin} colorScheme="facebook">
                             <img
                                 src={'/assets/Vector.png'}
                                 width={10}

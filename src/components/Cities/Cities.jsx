@@ -2,23 +2,9 @@ import { useState, useEffect } from 'react'
 import './Cities.css'
 import { Input, InputGroup, InputLeftElement } from '@chakra-ui/react'
 import { SearchIcon } from '@chakra-ui/icons'
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 export default function Cities() {
-    // const cities = [
-    //     { name: 'Neo Tokio', imageUrl: '/assets/city1.png' },
-    //     { name: 'Buenos Aires', imageUrl: '/assets/city2.png' },
-    //     { name: 'Capilla del Monte ', imageUrl: '/assets/city3.png' },
-    //     { name: 'Wakatobi', imageUrl: '/assets/city4.png' },
-    //     { name: 'Assisi', imageUrl: '/assets/assisi-city-7150611_1280.jpg' },
-    //     { name: 'Paris ', imageUrl: '/assets/eiffel-tower-3349075_640.jpg' },
-    //     { name: 'Santorini', imageUrl: '/assets/santorini-4996846_1280.jpg' },
-    //     { name: 'hungarian', imageUrl: '/assets/hungarian-parliament-building-6933621_640.jpg' },
-    //     { name: 'Rio de janeiro', imageUrl: '/assets/rio-de-janeiro-1963744_640.jpg' },
-    //     { name: 'Venecia', imageUrl: '/assets/venice-2451047_640.jpg' },
-    //     { name: 'Praga', imageUrl: '/assets/prague-4794636_1280.jpg' },
-    //     { name: 'Barcelona', imageUrl: '/assets/travel-5188598_1280.jpg' },
-    //     // Add more city objects here...
-    // ];
+    const navigate = useNavigate();
 
     const [cities, setCities] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
@@ -34,7 +20,7 @@ export default function Cities() {
     const redirectToCity = (cityId) => {
         // Implement your navigation logic here
         // For example, you can use window.location.href to redirect
-        window.location.href = `/city/${cityId}`;
+        navigate(`/city/${cityId}`);
     };
 
     useEffect(() => {
