@@ -20,6 +20,7 @@ const Navbar = ({ backgroundColor, logoColor }) => {
     };
 
     const redirectToLogin = () => {
+        closeMenu()
         navigate('/login');
     };
 
