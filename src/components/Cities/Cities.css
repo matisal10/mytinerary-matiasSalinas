@@ -8,7 +8,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1rem 8rem;
+    padding: 1rem 3rem;
     width: 100%;
     filter: brightness(1.2);
 }
@@ -66,7 +66,6 @@
 }
 
 .image-city {
-    max-width: 45%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -90,11 +89,12 @@
     height: auto;
     min-width: 350px;
     max-width: 350px;
-    max-height: 237px;
-    min-height: 237px;
+    max-height: 230px; 
+    min-height: 230px; 
     object-fit: cover;
     border-radius: 10px;
 }
+
 
 .city-name {
     text-align: center;
@@ -116,5 +116,22 @@
     .containerInput {
         flex-direction: column; /* Stack items vertically */
         padding: 0px 20px;
+    }
+    
+    .containerCities {
+        justify-content: center;
+    }
+    
+    .image-city {
+        max-height: 60%; 
+        padding: 3px; 
+    }
+    
+    /* .image-city img {
+        max-height: 100%; 
+    } */
+    
+    .city-name {
+        font-size: 12px; 
     }
 }
