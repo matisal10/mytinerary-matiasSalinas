@@ -7,10 +7,15 @@
     /* background-image: url(assets/tokio.jpg); */
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     padding: 1rem 8rem;
     width: 100%;
     filter: brightness(1);
+}
+
+.buttonBack{
+    position: absolute;
+    top: 80px;
 }
 
 .contentCity {

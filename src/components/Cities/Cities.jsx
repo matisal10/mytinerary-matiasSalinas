@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import './Cities.css'
 import { Input, InputGroup, InputLeftElement } from '@chakra-ui/react'
 import { SearchIcon } from '@chakra-ui/icons'
-import { Link,useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 export default function Cities() {
     const navigate = useNavigate();
 
@@ -18,8 +18,6 @@ export default function Cities() {
     );
 
     const redirectToCity = (cityId) => {
-        // Implement your navigation logic here
-        // For example, you can use window.location.href to redirect
         navigate(`/city/${cityId}`);
     };
 

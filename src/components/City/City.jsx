@@ -22,10 +22,11 @@ import { BiLike, BiChat } from 'react-icons/bi'
 import { LiaMoneyBillAlt, LiaHashtagSolid } from 'react-icons/lia'
 import { MinusIcon, AddIcon } from '@chakra-ui/icons'
 
-import { useParams } from 'react-router-dom';
+import { useParams,useNavigate } from 'react-router-dom';
+
 
 const City = () => {
-
+    const navigate = useNavigate();
     // const [city, setCity] = useState();
     const itinerariesRef = useRef(null);
     const { id } = useParams();
@@ -66,12 +67,21 @@ const City = () => {
         getCity()
     }, []);
 
-    
+    const redirectToCities = () => {
+        // Implement your navigation logic here
+        // For example, you can use window.location.href to redirect
+        navigate(`/cities`);
+    };
 
     return (
         <>
             <section className="heroCity" style={{ backgroundImage: city ? `url(${city.cover})` : 'none' }}>
+            <div className='buttonBack'>
+                <Button colorScheme="facebook" className='' onClick={redirectToCities}>Go Back</Button>
+            </div>
+            
                 <div className="hero-background">
+                
                     {/* Content inside the hero section */}
                     <div className="contentCity">
                         <h1 style={{ color: '#ffbc40', fontWeight: '700' }}>{city && city.name}</h1>
@@ -84,7 +94,7 @@ const City = () => {
             </section>
             <section>
                 {
-                    city != undefined &&
+                    loading == false && city != undefined &&
                     <div ref={itinerariesRef} id='itineraries' className='containerItineraries'>
                         {city.itineraries && city.itineraries.length == 0 ?
                             <div className='noItineraries'>
