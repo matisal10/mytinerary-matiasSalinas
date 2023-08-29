@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import './City.css'
 import { useDispatch, useSelector } from 'react-redux';
 import cityActions from '../../store/actions/cityActions.js'
@@ -18,7 +18,7 @@ import {
     AccordionIcon,
 } from '@chakra-ui/react'
 
-import { BiLike, BiChat } from 'react-icons/bi'
+import { BiLike } from 'react-icons/bi'
 import { LiaMoneyBillAlt, LiaHashtagSolid } from 'react-icons/lia'
 import { MinusIcon, AddIcon } from '@chakra-ui/icons'
 
@@ -31,8 +31,7 @@ const City = () => {
     const itinerariesRef = useRef(null);
     const { id } = useParams();
     const dispatch = useDispatch()
-    const city = useSelector(store => store.cityReducer.city)
-    const loading = useSelector(store => store.cityReducer.loading)
+    const {city,loading} = useSelector(store => store.cityReducer)
 
     const scrollToItineraries = () => {
         if (itinerariesRef.current) {
@@ -42,34 +41,11 @@ const City = () => {
         }
     };
 
-    const getCity = async () => {
-        dispatch(saveCity({id}))
-        console.log("city",city)
-        // try {
-        //     const response = await fetch(`http://localhost:4000/api/cities/${id}`);
-
-        //     if (!response.ok) {
-        //         throw new Error('Network response was not ok');
-        //     }
-
-        //     const data = await response.json();
-        //     setCity(data.response);
-        //     console.log(data.response.itineraries)
-        // } catch (error) {
-        //     console.log(error)
-        //     throw new Error
-
-        // }
-    }
-
-
     useEffect(() => {
-        getCity()
+        dispatch(saveCity({id}))
     }, []);
 
     const redirectToCities = () => {
-        // Implement your navigation logic here
-        // For example, you can use window.location.href to redirect
         navigate(`/cities`);
     };
 
@@ -94,7 +70,7 @@ const City = () => {
             </section>
             <section>
                 {
-                    loading == false && city != undefined &&
+                    city != undefined &&
                     <div ref={itinerariesRef} id='itineraries' className='containerItineraries'>
                         {city.itineraries && city.itineraries.length == 0 ?
                             <div className='noItineraries'>
@@ -102,7 +78,7 @@ const City = () => {
                                 <div>There are no itineraries</div>
                             </div>
                             :
-                            (city.itineraries.map((itinerary, i) => (
+                            ( loading == false && city.itineraries.map((itinerary, i) => (
                                 <div key={i} className='Itineraries' >
                                     <Card maxW="3xl">
                                         <CardHeader>
