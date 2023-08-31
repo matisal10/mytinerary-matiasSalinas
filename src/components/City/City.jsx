@@ -66,7 +66,6 @@ const City = () => {
 
                 <div className="hero-background">
 
-                    {/* Content inside the hero section */}
                     <div className="contentCity">
                         <h1 style={{ color: '#ffbc40', fontWeight: '700' }}>{city && city.name}</h1>
                         <p>
