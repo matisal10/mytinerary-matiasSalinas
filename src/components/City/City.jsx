@@ -19,13 +19,11 @@ import {
     AccordionPanel,
     AccordionIcon,
 } from '@chakra-ui/react'
-import { VisuallyHidden, VisuallyHiddenInput } from '@chakra-ui/react'
 import { BiLike } from 'react-icons/bi'
 import { LiaMoneyBillAlt, LiaHashtagSolid } from 'react-icons/lia'
 import { MinusIcon, AddIcon } from '@chakra-ui/icons'
 
 import { useParams, useNavigate } from 'react-router-dom';
-import store from '../../store/store';
 
 
 const City = () => {
@@ -49,7 +47,6 @@ const City = () => {
     const getData = async() =>{
         dispatch(saveCity({ id }))
         await dispatch(getItinerariesForCity({ id }))
-        console.log(itineraries)
     }
 
     useEffect(() => {
@@ -85,18 +82,18 @@ const City = () => {
                     <div ref={itinerariesRef} id='itineraries' className='containerItineraries'>
                         {city.itineraries && city.itineraries.length == 0 ?
                             <div className='noItineraries'>
-                                <img src="https://via.placeholder.com/255x191" />
+                                <img src={"https://cdn.memegenerator.es/imagenes/memes/full/30/87/30874997.jpg"} />
                                 <div>There are no itineraries</div>
                             </div>
                             :
                             (loadingItineraries == false && itineraries.map((itinerary, i) => (
                                 <div key={i} className='Itineraries' >
-                                    <Card maxW="3xl">
+                                    <Card maxW="lg">
                                         <CardHeader>
                                             <Heading size={'lg'}>{itinerary.name}</Heading>
                                             <Flex spacing='4'>
                                                 <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
-                                                    <Avatar name='Segun Adebayo' src='https://bit.ly/sage-adebayo' />
+                                                    <Avatar name={itinerary.guideName} src={itinerary.guidePhoto} />
                                                     <Box>
                                                         <Heading size='sm'>{itinerary.guideName}</Heading>
                                                     </Box>
@@ -121,16 +118,20 @@ const City = () => {
                                                         {itinerary.duration} Hours
                                                     </p>
                                                 </div>
-                                                <div>
+                                                <div className='hashtag'>
                                                     <Heading size={'sm'}>
                                                         <Icon
                                                             as={LiaHashtagSolid}
                                                         />
                                                         hashtags
                                                     </Heading>
-                                                    <Text color={'violet'}>
-                                                        #caipirinia #praia #fuchibol
-                                                    </Text>
+                                                    {
+                                                        itinerary.hashtags.map((hashtag,i)=>(
+                                                            <span key={i} style={{color:"violet", paddingRight:"5px"}}>
+                                                                #{hashtag } 
+                                                            </span>
+                                                        ))
+                                                    }
                                                 </div>
                                                 <div>
                                                     <Button variant='ghost' p={0} leftIcon={<BiLike />}>
@@ -143,8 +144,10 @@ const City = () => {
                                         </CardBody>
                                         <Image
                                             objectFit='cover'
-                                            src={city ? city.image : 'none'}
-                                            alt='Chakra UI'
+                                            src={city ? itinerary.cover : 'none'}
+                                            alt={itinerary.name}
+                                            height={"400px"}
+                                            width={"550px"}
                                         />
                                         <Accordion allowToggle>
                                             <AccordionItem>
@@ -173,7 +176,7 @@ const City = () => {
                                                         <Stack>
                                                             <CardBody>
                                                                 <Text>Actividad</Text>
-                                                                <Heading size='md'>The perfect latte</Heading>
+                                                                <Heading size='md'>Actividad test</Heading>
                                                             </CardBody>
 
                                                             <CardFooter>
