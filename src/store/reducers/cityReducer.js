@@ -38,6 +38,7 @@ const cityReducer = createReducer(initialState,
                 const newState = { ...state, loadingCities: false }
                 return newState
             })
+
     });
 
 export default cityReducer

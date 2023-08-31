@@ -16,7 +16,6 @@ const saveCity = createAsyncThunk('getCity', async ({ id }) => {
     }
 })
 
-
 const saveCities = createAsyncThunk('getAllCities', async () => {
 
     try {

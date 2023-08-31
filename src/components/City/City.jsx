@@ -3,6 +3,8 @@ import './City.css'
 import { useDispatch, useSelector } from 'react-redux';
 import cityActions from '../../store/actions/cityActions.js'
 const { saveCity } = cityActions
+import itineraryActions from '../../store/actions/itineraryActions.js'
+const { getItinerariesForCity } = itineraryActions
 
 import {
     Button, Icon,
@@ -17,12 +19,13 @@ import {
     AccordionPanel,
     AccordionIcon,
 } from '@chakra-ui/react'
-
+import { VisuallyHidden, VisuallyHiddenInput } from '@chakra-ui/react'
 import { BiLike } from 'react-icons/bi'
 import { LiaMoneyBillAlt, LiaHashtagSolid } from 'react-icons/lia'
 import { MinusIcon, AddIcon } from '@chakra-ui/icons'
 
-import { useParams,useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import store from '../../store/store';
 
 
 const City = () => {
@@ -31,8 +34,10 @@ const City = () => {
     const itinerariesRef = useRef(null);
     const { id } = useParams();
     const dispatch = useDispatch()
-    const {city,loading} = useSelector(store => store.cityReducer)
-
+    const { city, loading } = useSelector(store => store.cityReducer)
+    const itineraries = useSelector(store => store.itineraryReducer.Itineraries)
+    const loadingItineraries = useSelector(store => store.itineraryReducer.loadingItineraries)
+    
     const scrollToItineraries = () => {
         if (itinerariesRef.current) {
             itinerariesRef.current.scrollIntoView({
@@ -41,8 +46,14 @@ const City = () => {
         }
     };
 
+    const getData = async() =>{
+        dispatch(saveCity({ id }))
+        await dispatch(getItinerariesForCity({ id }))
+        console.log(itineraries)
+    }
+
     useEffect(() => {
-        dispatch(saveCity({id}))
+        getData()
     }, []);
 
     const redirectToCities = () => {
@@ -52,12 +63,12 @@ const City = () => {
     return (
         <>
             <section className="heroCity" style={{ backgroundImage: city ? `url(${city.cover})` : 'none' }}>
-            <div className='buttonBack'>
-                <Button colorScheme="facebook" className='' onClick={redirectToCities}>Go Back</Button>
-            </div>
-            
+                <div className='buttonBack'>
+                    <Button colorScheme="facebook" className='' onClick={redirectToCities}>Go Back</Button>
+                </div>
+
                 <div className="hero-background">
-                
+
                     {/* Content inside the hero section */}
                     <div className="contentCity">
                         <h1 style={{ color: '#ffbc40', fontWeight: '700' }}>{city && city.name}</h1>
@@ -78,7 +89,7 @@ const City = () => {
                                 <div>There are no itineraries</div>
                             </div>
                             :
-                            ( loading == false && city.itineraries.map((itinerary, i) => (
+                            (loadingItineraries == false && itineraries.map((itinerary, i) => (
                                 <div key={i} className='Itineraries' >
                                     <Card maxW="3xl">
                                         <CardHeader>
@@ -180,9 +191,6 @@ const City = () => {
                                                     minW: '136px',
                                                 },
                                             }}>
-                                            {/* <Button flex='1' variant='ghost' leftIcon={<BiChat />}>
-                                                Comment
-                                            </Button> */}
                                             <Accordion allowToggle flex='1'>
                                                 <AccordionItem>
                                                     {({ isExpanded }) => (
