@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import {
     Flex,
     Box,
@@ -11,18 +11,55 @@ import {
     Heading,
     Text,
     useColorModeValue,
+    VisuallyHidden
 } from '@chakra-ui/react'
-import { FaFacebook } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import "./Login.css"
 import { Link } from 'react-router-dom';
 
 const Login = () => {
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [emailError, setEmailError] = useState(false);
+    const [passwordError, setPasswordError] = useState('');
+
+    const handleEmailChange = (e) => {
+        const newEmail = e.target.value;
+        setEmail(newEmail);
+
+        if (!isValidEmail(newEmail)) {
+            setEmailError('Correo electrónico no válido');
+        } else {
+            setEmailError('');
+        }
+    };
+
+    const handlePasswordChange = (e) => {
+        const newPassword = e.target.value;
+        setPassword(newPassword);
+
+        if (newPassword.length < 6) {
+            setPasswordError('La contraseña debe tener al menos 6 caracteres');
+        } else {
+            setPasswordError('');
+        }
+    };
+
+    const isValidEmail = (email) => {
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return emailPattern.test(email); // Cambia esto con tu lógica de validación de correo electrónico.
+    };
+
+    const handleLogin = () => {
+
+    }
+
     return (
         <>
             <section className='containerLogin'>
                 <div><h1>My Tinerary</h1></div>
-                <div>
+                <div style={{height:"100vh"}}>
                     <Flex
                         className='ContainerForm'
                         minH={''}
@@ -44,11 +81,21 @@ const Login = () => {
                                 <Stack spacing={4}>
                                     <FormControl id="email">
                                         <FormLabel>Email address</FormLabel>
-                                        <Input type="email" />
+                                        <Input
+                                            type="email"
+                                            value={email}
+                                            onChange={handleEmailChange}
+                                        />
+                                        {emailError && <Text color="red">{emailError}</Text>}
                                     </FormControl>
                                     <FormControl id="password">
                                         <FormLabel>Password</FormLabel>
-                                        <Input type="password" />
+                                        <Input
+                                            type="password"
+                                            value={password}
+                                            onChange={handlePasswordChange}
+                                        />
+                                        {passwordError && <Text color="red">{passwordError}</Text>}
                                     </FormControl>
                                     <Stack spacing={10}>
                                         <Stack
@@ -71,21 +118,15 @@ const Login = () => {
                             </Box>
                         </Stack>
                         <div className='containerButtons'>
-                            <Button
-                                colorScheme='white'
-                                color={'black'}
+                        <Button
                                 variant={'outline'}
+                                borderColor={'black'}
                                 leftIcon={<FcGoogle />}
-                                >
-                                Continue with Google
-                            </Button>
-                            <Button
-                                colorScheme='facebook'
-                                _hover={{
-                                    bg: 'blue.500',
-                                }}
-                                leftIcon={<FaFacebook />}>
-                                Continue with facebook
+                            >
+                                <VisuallyHidden>
+                                    
+                                </VisuallyHidden>
+                                <Text>Continue with Google</Text>
                             </Button>
                         </div>
                     </Flex>
