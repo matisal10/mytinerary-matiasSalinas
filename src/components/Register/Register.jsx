@@ -23,15 +23,39 @@ const Register = () => {
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState(false);
     const [passwordError, setPasswordError] = useState('');
+    const [nameError, setNameError] = useState('');
+    const [lastNameError, setLastNameError] = useState('');
     const [countries, setCountries] = useState([]);
     const [selectedCountry, setSelectedCountry] = useState('');
+
+    const handleNameChange = (e) => {
+        const newName = e.target.value;
+        setName(newName);
+
+        if (newName.trim() === "") {
+            setNameError('Name is required');
+        } else {
+            setNameError('');
+        }
+    };
+
+    const handleLastNameChange = (e) => {
+        const newLastName = e.target.value;
+        setLastName(newLastName);
+
+        if (newLastName.trim() === "") {
+            setLastNameError('LastName is required');
+        } else {
+            setLastNameError('');
+        }
+    };
 
     const handleEmailChange = (e) => {
         const newEmail = e.target.value;
         setEmail(newEmail);
 
         if (!isValidEmail(newEmail)) {
-            setEmailError('Correo electrónico no válido');
+            setEmailError('invalid email');
         } else {
             setEmailError('');
         }
@@ -42,7 +66,7 @@ const Register = () => {
         setPassword(newPassword);
 
         if (newPassword.length < 6) {
-            setPasswordError('La contraseña debe tener al menos 6 caracteres');
+            setPasswordError('The password must be at least 6 characters');
         } else {
             setPasswordError('');
         }
@@ -66,7 +90,6 @@ const Register = () => {
             const response = await fetch(url, options);
             const data = await response.json();
             setCountries(data)
-            // console.log(data);
         } catch (error) {
             console.error(error);
         }
@@ -136,16 +159,18 @@ const Register = () => {
                                         <Input
                                             type="text"
                                             value={name}
-                                            onChange={(e) => setName(e.target.value)}
+                                            onChange={handleNameChange}
                                         />
+                                        {nameError && <Text fontSize='sm' color="red">{nameError}</Text>}
                                     </FormControl>
                                     <FormControl id="lastName">
                                         <FormLabel>LastName</FormLabel>
                                         <Input
                                             type="text"
                                             value={lastName}
-                                            onChange={(e) => setLastName(e.target.value)}
+                                            onChange={handleLastNameChange}
                                         />
+                                        {lastNameError && <Text fontSize='sm' color="red">{lastNameError}</Text>}
                                     </FormControl>
                                     <FormControl id="email">
                                         <FormLabel>Email address</FormLabel>
@@ -154,7 +179,7 @@ const Register = () => {
                                             value={email}
                                             onChange={handleEmailChange}
                                         />
-                                        {emailError && <Text color="red">{emailError}</Text>}
+                                        {emailError && <Text fontSize='sm' color="red">{emailError}</Text>}
                                     </FormControl>
                                     <FormControl id="password">
                                         <FormLabel>Password</FormLabel>
@@ -163,7 +188,7 @@ const Register = () => {
                                             value={password}
                                             onChange={handlePasswordChange}
                                         />
-                                        {passwordError && <Text color="red">{passwordError}</Text>}
+                                        {passwordError && <Text fontSize='sm' color="red">{passwordError}</Text>}
                                     </FormControl>
                                     <FormControl id="select">
                                         <FormLabel>Country</FormLabel>
@@ -211,8 +236,6 @@ const Register = () => {
                                 </VisuallyHidden>
                                 <Text>Continue with Google</Text>
                             </Button>
-
-
                         </div>
                     </Flex>
                 </div>

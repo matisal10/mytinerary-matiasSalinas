@@ -15,10 +15,10 @@ import {
 } from '@chakra-ui/react'
 import { FcGoogle } from 'react-icons/fc';
 import "./Login.css"
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 
 const Login = () => {
-
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState(false);
@@ -29,7 +29,7 @@ const Login = () => {
         setEmail(newEmail);
 
         if (!isValidEmail(newEmail)) {
-            setEmailError('Correo electrónico no válido');
+            setEmailError('invalid email');
         } else {
             setEmailError('');
         }
@@ -40,7 +40,7 @@ const Login = () => {
         setPassword(newPassword);
 
         if (newPassword.length < 6) {
-            setPasswordError('La contraseña debe tener al menos 6 caracteres');
+            setPasswordError('The password must be at least 6 characters');
         } else {
             setPasswordError('');
         }
@@ -48,18 +48,40 @@ const Login = () => {
 
     const isValidEmail = (email) => {
         const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        return emailPattern.test(email); // Cambia esto con tu lógica de validación de correo electrónico.
+        return emailPattern.test(email);
     };
 
-    const handleLogin = () => {
+    const handleLogin = async () => {
+        const formData = {
+            email,
+            password
+        }
+        try {
+            const response = await fetch('http://localhost:4000/api/auth/signIn', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            console.log('Usuario autenticado:', data);
+            localStorage.setItem('token',data.token)
+            navigate('/')
 
+        } catch (error) {
+            console.error('Error al iniciar sesión:', error);
+        }
     }
 
     return (
         <>
             <section className='containerLogin'>
                 <div><h1>My Tinerary</h1></div>
-                <div style={{height:"100vh"}}>
+                <div style={{ height: "100vh" }}>
                     <Flex
                         className='ContainerForm'
                         minH={''}
@@ -86,7 +108,7 @@ const Login = () => {
                                             value={email}
                                             onChange={handleEmailChange}
                                         />
-                                        {emailError && <Text color="red">{emailError}</Text>}
+                                        {emailError && <Text fontSize='sm' color="red">{emailError}</Text>}
                                     </FormControl>
                                     <FormControl id="password">
                                         <FormLabel>Password</FormLabel>
@@ -95,22 +117,23 @@ const Login = () => {
                                             value={password}
                                             onChange={handlePasswordChange}
                                         />
-                                        {passwordError && <Text color="red">{passwordError}</Text>}
+                                        {passwordError && <Text fontSize='sm' color="red">{passwordError}</Text>}
                                     </FormControl>
                                     <Stack spacing={10}>
                                         <Stack
                                             direction={{ base: 'column', sm: 'row' }}
                                             align={'start'}
                                             justify={'space-between'}>
-                                            <Checkbox>Remember me</Checkbox>
-                                            <Text color={'blue.400'}>Forgot password?</Text>
+                                            {/* <Checkbox>Remember me</Checkbox>
+                                            <Text color={'blue.400'}>Forgot password?</Text> */}
                                         </Stack>
                                         <Button
                                             bg={'blue.400'}
                                             color={'white'}
                                             _hover={{
                                                 bg: 'blue.500',
-                                            }}>
+                                            }}
+                                            onClick={handleLogin}>
                                             Sign in
                                         </Button>
                                     </Stack>
@@ -118,13 +141,13 @@ const Login = () => {
                             </Box>
                         </Stack>
                         <div className='containerButtons'>
-                        <Button
+                            <Button
                                 variant={'outline'}
                                 borderColor={'black'}
                                 leftIcon={<FcGoogle />}
                             >
                                 <VisuallyHidden>
-                                    
+
                                 </VisuallyHidden>
                                 <Text>Continue with Google</Text>
                             </Button>
