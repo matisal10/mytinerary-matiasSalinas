@@ -4,12 +4,14 @@ import {
     Link,
     useNavigate
 } from "react-router-dom";
-import { Button } from '@chakra-ui/react'
+import { Button } from '@chakra-ui/react';
+import {BiLogOut} from 'react-icons/bi';
 import './Navbar.css'
 
 const Navbar = ({ backgroundColor, logoColor }) => {
     const [menuOpen, setMenuOpen] = useState(false);
     const navigate = useNavigate();
+    const token = localStorage.getItem('token') || ''
 
     const closeMenu = () => {
         setMenuOpen(false);
@@ -23,6 +25,11 @@ const Navbar = ({ backgroundColor, logoColor }) => {
         closeMenu()
         navigate('/login');
     };
+
+    const logout = () =>{
+        localStorage.removeItem('token')
+        navigate('/login');
+    }
 
     return (
         <div style={{ backgroundColor }} className="navbar">
@@ -45,6 +52,7 @@ const Navbar = ({ backgroundColor, logoColor }) => {
                         </Link>
                     </li>
                     <li>
+                    { token == '' ?
                         <Button onClick={redirectToLogin} colorScheme="facebook">
                             <img
                                 src={'/assets/Vector.png'}
@@ -53,6 +61,11 @@ const Navbar = ({ backgroundColor, logoColor }) => {
                             />
                             Login
                         </Button>
+                        :
+                        <Button onClick={logout} colorScheme="facebook" leftIcon={<BiLogOut/>}>
+                            Logout
+                        </Button>
+                    }
                     </li>
                 </ul>
             </nav>
