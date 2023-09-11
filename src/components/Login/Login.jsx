@@ -5,17 +5,16 @@ import {
     FormControl,
     FormLabel,
     Input,
-    Checkbox,
     Stack,
     Button,
     Heading,
     Text,
     useColorModeValue,
-    VisuallyHidden
 } from '@chakra-ui/react'
-import { FcGoogle } from 'react-icons/fc';
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import "./Login.css"
-import { Link,useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import jwtDecode from 'jwt-decode';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -23,6 +22,8 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState(false);
     const [passwordError, setPasswordError] = useState('');
+    // process.env.REACT_APP_GOOGLE_ID
+    const clientId = "598884924006-vb47s2c9b0bvf0mrkju7lah48n1fsb71.apps.googleusercontent.com"
 
     const handleEmailChange = (e) => {
         const newEmail = e.target.value;
@@ -69,11 +70,35 @@ const Login = () => {
             }
             const data = await response.json();
             console.log('Usuario autenticado:', data);
-            localStorage.setItem('token',data.token)
+            localStorage.setItem('token', data.token)
+            localStorage.setItem('userData', data.userData)
             navigate('/')
 
         } catch (error) {
-            console.error('Error al iniciar sesión:', error);
+            console.error('Error with singIn:', error);
+        }
+    }
+
+    const handleLoginWithGoogle = async (dataForm) => {
+        try {
+            const response = await fetch('http://localhost:4000/api/auth/signIn', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(dataForm),
+            });
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            console.log('Usuario autenticado:', data);
+            localStorage.setItem('token', data.token)
+            localStorage.setItem('userData', data.userData)
+            navigate('/')
+
+        } catch (error) {
+            console.error('Error with singIn:', error);
         }
     }
 
@@ -141,16 +166,21 @@ const Login = () => {
                             </Box>
                         </Stack>
                         <div className='containerButtons'>
-                            <Button
-                                variant={'outline'}
-                                borderColor={'black'}
-                                leftIcon={<FcGoogle />}
-                            >
-                                <VisuallyHidden>
-
-                                </VisuallyHidden>
-                                <Text>Continue with Google</Text>
-                            </Button>
+                            <GoogleOAuthProvider clientId={clientId}>
+                                <GoogleLogin
+                                    onSuccess={credentialResponse => {
+                                        // console.log(credentialResponse);
+                                        const infoUser = jwtDecode(credentialResponse.credential)
+                                        handleLoginWithGoogle({
+                                            email: infoUser.email,
+                                            password: infoUser.given_name + infoUser.family_name + "Ae123",
+                                        })
+                                    }}
+                                    onError={() => {
+                                        console.log('Login Failed');
+                                    }}
+                                />
+                            </GoogleOAuthProvider>
                         </div>
                     </Flex>
                 </div>

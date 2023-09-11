@@ -10,11 +10,13 @@ import {
     Heading,
     Text,
     useColorModeValue,
-    Select, VisuallyHidden
+    Select
 } from '@chakra-ui/react'
-import { FcGoogle } from 'react-icons/fc';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import './Register.css'
+import jwtDecode from 'jwt-decode';
+
 const Register = () => {
     const [name, setName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -27,6 +29,8 @@ const Register = () => {
     const [lastNameError, setLastNameError] = useState('');
     const [countries, setCountries] = useState([]);
     const [selectedCountry, setSelectedCountry] = useState('');
+
+    const navigate = useNavigate()
 
     const handleNameChange = (e) => {
         const newName = e.target.value;
@@ -95,12 +99,35 @@ const Register = () => {
         }
     }
 
+    const handleSubmitWithGoogle = async (dataForm) => {
+        try {
+            const response = await fetch('http://localhost:4000/api/auth/singUp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(dataForm),
+            });
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            console.log('Usuario autenticado:', data);
+            localStorage.setItem('token', data.token)
+            localStorage.setItem('userData', data.userData)
+            navigate('/')
+
+        } catch (error) {
+            console.error('Error with signup:', error);
+        }
+    }
+
     useEffect(() => {
         getCountries()
     }, []);
 
-    const handleRegistration = () => {
-        const formData = {
+    const handleRegistration = async () => {
+        const dataForm = {
             name,
             lastName,
             photo,
@@ -108,24 +135,26 @@ const Register = () => {
             password,
             selectedCountry,
         };
-        // Ejemplo de envío a través de fetch:
-        // fetch('url_del_backend', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(formData),
-        // })
-        //     .then((response) => response.json())
-        //     .then((data) => {
-        //         // Realizar acciones después de un registro exitoso
-        //         console.log('Registro exitoso', data);
-        //     })
-        //     .catch((error) => {
-        //         // Manejar errores de registro
-        //         console.error('Error al registrar', error);
-        //     });
-        console.log(formData)
+        try {
+            const response = await fetch('http://localhost:4000/api/auth/singUp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(dataForm),
+            });
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            console.log('Usuario autenticado:', data);
+            localStorage.setItem('token', data.token)
+            localStorage.setItem('userData', data.userData)
+            navigate('/')
+
+        } catch (error) {
+            console.error('Error with signup:', error);
+        }
     };
 
 
@@ -226,16 +255,24 @@ const Register = () => {
                             </Box>
                         </Stack>
                         <div className='containerButtons'>
-                            <Button
-                                variant={'outline'}
-                                borderColor={'black'}
-                                leftIcon={<FcGoogle />}
-                            >
-                                <VisuallyHidden>
-                                    
-                                </VisuallyHidden>
-                                <Text>Continue with Google</Text>
-                            </Button>
+                            <GoogleOAuthProvider clientId="598884924006-vb47s2c9b0bvf0mrkju7lah48n1fsb71.apps.googleusercontent.com">
+                                <GoogleLogin
+                                    onSuccess={credentialResponse => {
+                                        const infoUser = jwtDecode(credentialResponse.credential)
+                                        handleSubmitWithGoogle({
+                                            email: infoUser.email,
+                                            name: infoUser.given_name,
+                                            lastName: infoUser.family_name,
+                                            photo: infoUser.picture,
+                                            password: infoUser.given_name + infoUser.family_name + "Ae123",
+                                            country: " "
+                                        })
+                                    }}
+                                    onError={() => {
+                                        console.log('SignUp Failed');
+                                    }}
+                                />
+                            </GoogleOAuthProvider>
                         </div>
                     </Flex>
                 </div>
