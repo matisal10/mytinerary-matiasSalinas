@@ -56,22 +56,26 @@ const Login = () => {
         return emailPattern.test(email);
     };
 
+    useEffect(() => {
+        // Observa cambios en el estado de error
+        if (error !== '' ) {
+            setEmailPasswordError('The email/password is incorrect');
+        } else {
+            setEmailPasswordError('');
+        }
+    }, [error]);
+
     const handleLogin = async () => {
         const formData = {
             email,
             password
         }
+        setEmailPasswordError('');
         await dispatch(login(formData));
-
-        if (error!="") {
-            setEmailPasswordError('The email/password is incorrect');
-        } else {
-            const token = localStorage.getItem('token');
-            if (token) {
-                navigate('/');
-            }
+        const token = localStorage.getItem('token')
+        if (token) {
+            navigate('/')
         }
-
     }
 
     const handleLoginWithGoogle = async (dataForm) => {
