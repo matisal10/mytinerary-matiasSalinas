@@ -11,10 +11,13 @@ import {
     Text,
     useColorModeValue,
 } from '@chakra-ui/react'
-import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import { GoogleLogin } from '@react-oauth/google';
 import "./Login.css"
 import { Link, useNavigate } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
+import { useDispatch } from 'react-redux';
+import authActions from '../../store/actions/authActions'
+const { signIn } = authActions
 
 const Login = () => {
     const navigate = useNavigate();
@@ -22,8 +25,7 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState(false);
     const [passwordError, setPasswordError] = useState('');
-    // process.env.REACT_APP_GOOGLE_ID
-    const clientId = "598884924006-vb47s2c9b0bvf0mrkju7lah48n1fsb71.apps.googleusercontent.com"
+    const dispatch = useDispatch()
 
     const handleEmailChange = (e) => {
         const newEmail = e.target.value;
@@ -57,49 +59,13 @@ const Login = () => {
             email,
             password
         }
-        try {
-            const response = await fetch('http://localhost:4000/api/auth/signIn', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            });
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const data = await response.json();
-            console.log('Usuario autenticado:', data);
-            localStorage.setItem('token', data.token)
-            localStorage.setItem('userData', data.userData)
-            navigate('/')
-
-        } catch (error) {
-            console.error('Error with singIn:', error);
-        }
+        await dispatch(signIn(formData))
+        navigate('/')
     }
 
     const handleLoginWithGoogle = async (dataForm) => {
-        try {
-            const response = await fetch('http://localhost:4000/api/auth/signIn', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(dataForm),
-            });
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const data = await response.json();
-            console.log('Usuario autenticado:', data);
-            localStorage.setItem('token', data.token)
-            localStorage.setItem('userData', data.userData)
-            navigate('/')
-
-        } catch (error) {
-            console.error('Error with singIn:', error);
-        }
+        await dispatch(signIn(dataForm))
+        navigate('/')
     }
 
     return (
@@ -166,21 +132,20 @@ const Login = () => {
                             </Box>
                         </Stack>
                         <div className='containerButtons'>
-                            <GoogleOAuthProvider clientId={clientId}>
+                            
                                 <GoogleLogin
                                     onSuccess={credentialResponse => {
-                                        // console.log(credentialResponse);
                                         const infoUser = jwtDecode(credentialResponse.credential)
                                         handleLoginWithGoogle({
                                             email: infoUser.email,
-                                            password: infoUser.given_name + infoUser.family_name + "Ae123",
+                                            password: infoUser.given_name + infoUser.family_name + import.meta.env.VITE_PASSWORD_GOOGLE,
                                         })
                                     }}
                                     onError={() => {
                                         console.log('Login Failed');
                                     }}
                                 />
-                            </GoogleOAuthProvider>
+
                         </div>
                     </Flex>
                 </div>

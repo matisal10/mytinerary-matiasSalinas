@@ -15,7 +15,7 @@ import { ChakraProvider } from '@chakra-ui/react'
 import { extendTheme } from '@chakra-ui/react'
 
 import SegoeUI from "/assets/segoe-ui-4-cufonfonts/SegoeUI.ttf";
-
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 
 const theme = extendTheme({
@@ -31,15 +31,16 @@ const theme = extendTheme({
 ReactDOM.createRoot(document.getElementById('root')).render(
   <>
     <ChakraProvider theme={theme}>
-      <Provider store={store}>
-        <Router>
-          <App />
-        </Router>
-      </Provider>
+      <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_ID}>
+        <Provider store={store}>
+          <Router>
+            <App />
+          </Router>
+        </Provider>
 
 
-      <Global
-        styles={css`
+        <Global
+          styles={css`
           @font-face {
             font-family: "MiFuente";
             src: url(${SegoeUI}) format("truetype");
@@ -47,7 +48,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             font-style: normal;
           }
         `}
-      />
+        />
+      </GoogleOAuthProvider>
     </ChakraProvider>
   </>,
 )

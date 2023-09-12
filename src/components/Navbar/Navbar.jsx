@@ -28,6 +28,7 @@ const Navbar = ({ backgroundColor, logoColor }) => {
 
     const logout = () =>{
         localStorage.removeItem('token')
+        localStorage.removeItem('userData')
         navigate('/login');
     }
 

@@ -13,9 +13,12 @@ import {
     Select
 } from '@chakra-ui/react'
 import { Link, useNavigate } from 'react-router-dom';
-import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import { GoogleLogin } from '@react-oauth/google';
 import './Register.css'
 import jwtDecode from 'jwt-decode';
+import { useDispatch } from 'react-redux';
+import authActions from '../../store/actions/authActions'
+const { signUp } = authActions
 
 const Register = () => {
     const [name, setName] = useState('');
@@ -29,6 +32,7 @@ const Register = () => {
     const [lastNameError, setLastNameError] = useState('');
     const [countries, setCountries] = useState([]);
     const [selectedCountry, setSelectedCountry] = useState('');
+    const dispatch = useDispatch()
 
     const navigate = useNavigate()
 
@@ -100,26 +104,8 @@ const Register = () => {
     }
 
     const handleSubmitWithGoogle = async (dataForm) => {
-        try {
-            const response = await fetch('http://localhost:4000/api/auth/singUp', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(dataForm),
-            });
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const data = await response.json();
-            console.log('Usuario autenticado:', data);
-            localStorage.setItem('token', data.token)
-            localStorage.setItem('userData', data.userData)
-            navigate('/')
-
-        } catch (error) {
-            console.error('Error with signup:', error);
-        }
+        await dispatch(signUp(dataForm))
+        navigate('/')
     }
 
     useEffect(() => {
@@ -133,28 +119,10 @@ const Register = () => {
             photo,
             email,
             password,
-            selectedCountry,
+            country: selectedCountry,
         };
-        try {
-            const response = await fetch('http://localhost:4000/api/auth/singUp', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(dataForm),
-            });
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const data = await response.json();
-            console.log('Usuario autenticado:', data);
-            localStorage.setItem('token', data.token)
-            localStorage.setItem('userData', data.userData)
-            navigate('/')
-
-        } catch (error) {
-            console.error('Error with signup:', error);
-        }
+        await dispatch(signUp(dataForm))
+        navigate('/')
     };
 
 
@@ -184,7 +152,7 @@ const Register = () => {
                                 p={8}>
                                 <Stack spacing={4}>
                                     <FormControl id="name">
-                                        <FormLabel>Name</FormLabel>
+                                        <FormLabel>Name <span style={{color:"red"}}>*</span></FormLabel>
                                         <Input
                                             type="text"
                                             value={name}
@@ -193,7 +161,7 @@ const Register = () => {
                                         {nameError && <Text fontSize='sm' color="red">{nameError}</Text>}
                                     </FormControl>
                                     <FormControl id="lastName">
-                                        <FormLabel>LastName</FormLabel>
+                                        <FormLabel>LastName <span style={{color:"red"}}>*</span></FormLabel>
                                         <Input
                                             type="text"
                                             value={lastName}
@@ -202,7 +170,7 @@ const Register = () => {
                                         {lastNameError && <Text fontSize='sm' color="red">{lastNameError}</Text>}
                                     </FormControl>
                                     <FormControl id="email">
-                                        <FormLabel>Email address</FormLabel>
+                                        <FormLabel>Email address <span style={{color:"red"}}>*</span></FormLabel>
                                         <Input
                                             type="email"
                                             value={email}
@@ -211,7 +179,7 @@ const Register = () => {
                                         {emailError && <Text fontSize='sm' color="red">{emailError}</Text>}
                                     </FormControl>
                                     <FormControl id="password">
-                                        <FormLabel>Password</FormLabel>
+                                        <FormLabel>Password <span style={{color:"red"}}>*</span></FormLabel>
                                         <Input
                                             type="password"
                                             value={password}
@@ -220,7 +188,7 @@ const Register = () => {
                                         {passwordError && <Text fontSize='sm' color="red">{passwordError}</Text>}
                                     </FormControl>
                                     <FormControl id="select">
-                                        <FormLabel>Country</FormLabel>
+                                        <FormLabel>Country <span style={{color:"red"}}>*</span></FormLabel>
                                         <Select placeholder='Select Country' value={selectedCountry}
                                             onChange={(e) => setSelectedCountry(e.target.value)}>
                                             {countries.length > 0 && countries.filter((countryData) => countryData.value) // Filtra elementos vacíos
@@ -237,7 +205,7 @@ const Register = () => {
                                         <Input
                                             type="text"
                                             value={photo}
-                                            onChange={(e) => setPhoto(e.target.value)}
+                                            onChange={(e) => setPhoto(e.target.value === "" ? " " : e.target.value)}
                                         />
                                     </FormControl>
                                     <Stack spacing={10}>
@@ -255,7 +223,7 @@ const Register = () => {
                             </Box>
                         </Stack>
                         <div className='containerButtons'>
-                            <GoogleOAuthProvider clientId="598884924006-vb47s2c9b0bvf0mrkju7lah48n1fsb71.apps.googleusercontent.com">
+                            
                                 <GoogleLogin
                                     onSuccess={credentialResponse => {
                                         const infoUser = jwtDecode(credentialResponse.credential)
@@ -264,7 +232,7 @@ const Register = () => {
                                             name: infoUser.given_name,
                                             lastName: infoUser.family_name,
                                             photo: infoUser.picture,
-                                            password: infoUser.given_name + infoUser.family_name + "Ae123",
+                                            password: infoUser.given_name + infoUser.family_name + import.meta.env.VITE_PASSWORD_GOOGLE,
                                             country: " "
                                         })
                                     }}
@@ -272,7 +240,6 @@ const Register = () => {
                                         console.log('SignUp Failed');
                                     }}
                                 />
-                            </GoogleOAuthProvider>
                         </div>
                     </Flex>
                 </div>
