@@ -16,14 +16,16 @@ const signUp = createAsyncThunk('signUp', async (dataForm) => {
         console.log('Usuario autenticado:', data);
         localStorage.setItem('token', data.token)
         localStorage.setItem('userData', data.userData)
+        return data.token
 
     } catch (error) {
         console.error('Error with signup:', error);
+        return []
     }
 
 })
 
-const signIn = createAsyncThunk('login', async (formData) => {
+const login = createAsyncThunk('login', async (formData) => {
 
     try {
         const response = await fetch('http://localhost:4000/api/auth/signIn', {
@@ -40,11 +42,13 @@ const signIn = createAsyncThunk('login', async (formData) => {
         console.log('Usuario autenticado:', data);
         localStorage.setItem('token', data.token)
         localStorage.setItem('userData', data.userData)
+        return data.token
 
     } catch (error) {
         console.error('Error with singIn:', error);
+        return []
     }
 })
 
-const actions = { signUp, signIn }
+const actions = { signUp, login }
 export default actions

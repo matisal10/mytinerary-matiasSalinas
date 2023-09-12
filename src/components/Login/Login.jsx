@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
     Flex,
     Box,
@@ -15,9 +15,9 @@ import { GoogleLogin } from '@react-oauth/google';
 import "./Login.css"
 import { Link, useNavigate } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 import authActions from '../../store/actions/authActions'
-const { signIn } = authActions
+const { login } = authActions
 
 const Login = () => {
     const navigate = useNavigate();
@@ -26,7 +26,7 @@ const Login = () => {
     const [emailError, setEmailError] = useState(false);
     const [passwordError, setPasswordError] = useState('');
     const dispatch = useDispatch()
-
+    const [formValid, setFormValid] = useState(false);
     const handleEmailChange = (e) => {
         const newEmail = e.target.value;
         setEmail(newEmail);
@@ -59,14 +59,32 @@ const Login = () => {
             email,
             password
         }
-        await dispatch(signIn(formData))
-        navigate('/')
+        await dispatch(login(formData))
+        const token = localStorage.getItem('token')
+        if(token){
+            navigate('/')
+        }
+        
     }
 
     const handleLoginWithGoogle = async (dataForm) => {
-        await dispatch(signIn(dataForm))
-        navigate('/')
+        await dispatch(login(dataForm))
+        const token = localStorage.getItem('token')
+        if(token){
+            navigate('/')
+        }
     }
+
+    useEffect(() => {
+        if (
+            emailError !== '' &&
+            passwordError === '' 
+        ) {
+            setFormValid(true);
+        } else {
+            setFormValid(false);
+        }
+    }, [emailError, passwordError]);
 
     return (
         <>
@@ -124,6 +142,7 @@ const Login = () => {
                                             _hover={{
                                                 bg: 'blue.500',
                                             }}
+                                            isDisabled={formValid}
                                             onClick={handleLogin}>
                                             Sign in
                                         </Button>
