@@ -18,11 +18,19 @@ h1{
     font-weight: bold;
     color: white;
 }
-
 .ContainerForm{
     display: flex;
     flex-direction: column;
     margin-top: 79px
+}
+
+.error-message {
+    color: red;
+    font-size: 15px;
+    max-width: 100%; 
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
 }
 
 .containerButtons{

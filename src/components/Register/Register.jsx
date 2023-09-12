@@ -32,6 +32,7 @@ const Register = () => {
     const [lastNameError, setLastNameError] = useState('');
     const [countries, setCountries] = useState([]);
     const [selectedCountry, setSelectedCountry] = useState('');
+    const [formValid, setFormValid] = useState(false);
     const dispatch = useDispatch()
 
     const navigate = useNavigate()
@@ -73,12 +74,41 @@ const Register = () => {
         const newPassword = e.target.value;
         setPassword(newPassword);
 
-        if (newPassword.length < 6) {
-            setPasswordError('The password must be at least 6 characters');
-        } else {
-            setPasswordError('');
-        }
+        // Validar la contraseña y establecer el mensaje de error
+        const passwordError = validatePassword(newPassword);
+        setPasswordError(passwordError);
     };
+
+    const validatePassword = (password) => {
+        const minLength = 6;
+        const maxLength = 30;
+
+        const lowerCaseRegex = /[a-z]/;
+        const upperCaseRegex = /[A-Z]/;
+        const numericRegex = /[0-9]/;
+
+        if (password.length < minLength) {
+            return 'Password must be at least 6 characters long.';
+        }
+        if (password.length > maxLength) {
+            return 'Password cannot be more than 30 characters long.';
+        }
+
+        if (!lowerCaseRegex.test(password)) {
+            return 'Password must contain at least one lowercase letter.';
+        }
+
+        if (!upperCaseRegex.test(password)) {
+            return 'Password must contain at least one uppercase letter.';
+        }
+
+        if (!numericRegex.test(password)) {
+            return 'Password must contain at least one number.';
+        }
+
+        return '';
+    };
+
 
     const isValidEmail = (email) => {
         const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -105,7 +135,11 @@ const Register = () => {
 
     const handleSubmitWithGoogle = async (dataForm) => {
         await dispatch(signUp(dataForm))
-        navigate('/')
+        const token = localStorage.getItem('token')
+        if (token) {
+            navigate('/')
+        }
+
     }
 
     useEffect(() => {
@@ -122,10 +156,27 @@ const Register = () => {
             country: selectedCountry,
         };
         await dispatch(signUp(dataForm))
-        navigate('/')
+        const token = localStorage.getItem('token')
+        if (token) {
+            navigate('/')
+        }
+
     };
 
 
+    useEffect(() => {
+        if (
+            name.trim() !== '' &&
+            lastName.trim() !== '' &&
+            emailError === '' &&
+            passwordError === '' &&
+            selectedCountry !== ''
+        ) {
+            setFormValid(true);
+        } else {
+            setFormValid(false);
+        }
+    }, [name, lastName, emailError, passwordError, selectedCountry]);
 
     return (
         <>
@@ -152,7 +203,7 @@ const Register = () => {
                                 p={8}>
                                 <Stack spacing={4}>
                                     <FormControl id="name">
-                                        <FormLabel>Name <span style={{color:"red"}}>*</span></FormLabel>
+                                        <FormLabel>Name <span style={{ color: "red" }}>*</span></FormLabel>
                                         <Input
                                             type="text"
                                             value={name}
@@ -161,7 +212,7 @@ const Register = () => {
                                         {nameError && <Text fontSize='sm' color="red">{nameError}</Text>}
                                     </FormControl>
                                     <FormControl id="lastName">
-                                        <FormLabel>LastName <span style={{color:"red"}}>*</span></FormLabel>
+                                        <FormLabel>LastName <span style={{ color: "red" }}>*</span></FormLabel>
                                         <Input
                                             type="text"
                                             value={lastName}
@@ -170,7 +221,7 @@ const Register = () => {
                                         {lastNameError && <Text fontSize='sm' color="red">{lastNameError}</Text>}
                                     </FormControl>
                                     <FormControl id="email">
-                                        <FormLabel>Email address <span style={{color:"red"}}>*</span></FormLabel>
+                                        <FormLabel>Email address <span style={{ color: "red" }}>*</span></FormLabel>
                                         <Input
                                             type="email"
                                             value={email}
@@ -179,16 +230,16 @@ const Register = () => {
                                         {emailError && <Text fontSize='sm' color="red">{emailError}</Text>}
                                     </FormControl>
                                     <FormControl id="password">
-                                        <FormLabel>Password <span style={{color:"red"}}>*</span></FormLabel>
+                                        <FormLabel>Password <span style={{ color: "red" }}>*</span></FormLabel>
                                         <Input
                                             type="password"
                                             value={password}
                                             onChange={handlePasswordChange}
                                         />
-                                        {passwordError && <Text fontSize='sm' color="red">{passwordError}</Text>}
+                                        {passwordError && <div><span fontSize='sm' className='error-message'>{passwordError}</span></div>}
                                     </FormControl>
                                     <FormControl id="select">
-                                        <FormLabel>Country <span style={{color:"red"}}>*</span></FormLabel>
+                                        <FormLabel>Country <span style={{ color: "red" }}>*</span></FormLabel>
                                         <Select placeholder='Select Country' value={selectedCountry}
                                             onChange={(e) => setSelectedCountry(e.target.value)}>
                                             {countries.length > 0 && countries.filter((countryData) => countryData.value) // Filtra elementos vacíos
@@ -215,6 +266,7 @@ const Register = () => {
                                             _hover={{
                                                 bg: 'blue.500',
                                             }}
+                                            isDisabled={!formValid}
                                             onClick={handleRegistration}>
                                             Create Account
                                         </Button>
@@ -223,23 +275,22 @@ const Register = () => {
                             </Box>
                         </Stack>
                         <div className='containerButtons'>
-                            
-                                <GoogleLogin
-                                    onSuccess={credentialResponse => {
-                                        const infoUser = jwtDecode(credentialResponse.credential)
-                                        handleSubmitWithGoogle({
-                                            email: infoUser.email,
-                                            name: infoUser.given_name,
-                                            lastName: infoUser.family_name,
-                                            photo: infoUser.picture,
-                                            password: infoUser.given_name + infoUser.family_name + import.meta.env.VITE_PASSWORD_GOOGLE,
-                                            country: " "
-                                        })
-                                    }}
-                                    onError={() => {
-                                        console.log('SignUp Failed');
-                                    }}
-                                />
+                            <GoogleLogin
+                                onSuccess={credentialResponse => {
+                                    const infoUser = jwtDecode(credentialResponse.credential)
+                                    handleSubmitWithGoogle({
+                                        email: infoUser.email,
+                                        name: infoUser.given_name,
+                                        lastName: infoUser.family_name,
+                                        photo: infoUser.picture,
+                                        password: infoUser.given_name + infoUser.family_name + import.meta.env.VITE_PASSWORD_GOOGLE,
+                                        country: " "
+                                    })
+                                }}
+                                onError={() => {
+                                    console.log('SignUp Failed');
+                                }}
+                            />
                         </div>
                     </Flex>
                 </div>
