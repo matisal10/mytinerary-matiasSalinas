@@ -15,7 +15,7 @@ import { GoogleLogin } from '@react-oauth/google';
 import "./Login.css"
 import { Link, useNavigate } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
-import { useDispatch,useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import authActions from '../../store/actions/authActions'
 const { login } = authActions
 
@@ -26,6 +26,8 @@ const Login = () => {
     const [emailError, setEmailError] = useState(false);
     const [passwordError, setPasswordError] = useState('');
     const dispatch = useDispatch()
+    const { error } = useSelector(store => store.authReducer)
+    const [emailPasswordError, setEmailPasswordError] = useState('')
     const [formValid, setFormValid] = useState(false);
     const handleEmailChange = (e) => {
         const newEmail = e.target.value;
@@ -59,18 +61,23 @@ const Login = () => {
             email,
             password
         }
-        await dispatch(login(formData))
-        const token = localStorage.getItem('token')
-        if(token){
-            navigate('/')
+        await dispatch(login(formData));
+
+        if (error!="") {
+            setEmailPasswordError('The email/password is incorrect');
+        } else {
+            const token = localStorage.getItem('token');
+            if (token) {
+                navigate('/');
+            }
         }
-        
+
     }
 
     const handleLoginWithGoogle = async (dataForm) => {
         await dispatch(login(dataForm))
         const token = localStorage.getItem('token')
-        if(token){
+        if (token) {
             navigate('/')
         }
     }
@@ -78,7 +85,7 @@ const Login = () => {
     useEffect(() => {
         if (
             emailError !== '' &&
-            passwordError === '' 
+            passwordError === ''
         ) {
             setFormValid(true);
         } else {
@@ -146,25 +153,24 @@ const Login = () => {
                                             onClick={handleLogin}>
                                             Sign in
                                         </Button>
+                                        {emailPasswordError && <Text fontSize='sm' color="red">{emailPasswordError}</Text>}
                                     </Stack>
                                 </Stack>
                             </Box>
                         </Stack>
                         <div className='containerButtons'>
-                            
-                                <GoogleLogin
-                                    onSuccess={credentialResponse => {
-                                        const infoUser = jwtDecode(credentialResponse.credential)
-                                        handleLoginWithGoogle({
-                                            email: infoUser.email,
-                                            password: infoUser.given_name + infoUser.family_name + import.meta.env.VITE_PASSWORD_GOOGLE,
-                                        })
-                                    }}
-                                    onError={() => {
-                                        console.log('Login Failed');
-                                    }}
-                                />
-
+                            <GoogleLogin
+                                onSuccess={credentialResponse => {
+                                    const infoUser = jwtDecode(credentialResponse.credential)
+                                    handleLoginWithGoogle({
+                                        email: infoUser.email,
+                                        password: infoUser.given_name + infoUser.family_name + import.meta.env.VITE_PASSWORD_GOOGLE,
+                                    })
+                                }}
+                                onError={() => {
+                                    console.log('Login Failed');
+                                }}
+                            />
                         </div>
                     </Flex>
                 </div>

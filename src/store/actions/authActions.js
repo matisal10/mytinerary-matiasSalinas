@@ -10,7 +10,8 @@ const signUp = createAsyncThunk('signUp', async (dataForm) => {
             body: JSON.stringify(dataForm),
         });
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+            const errorData = await response.json(); 
+            throw new Error(errorData.message);
         }
         const data = await response.json();
         console.log('Usuario autenticado:', data);
@@ -19,14 +20,13 @@ const signUp = createAsyncThunk('signUp', async (dataForm) => {
         return data.token
 
     } catch (error) {
-        console.error('Error with signup:', error);
-        return []
+        console.error('Error with signUp:', error);
+        throw error; 
     }
 
 })
 
 const login = createAsyncThunk('login', async (formData) => {
-
     try {
         const response = await fetch('http://localhost:4000/api/auth/signIn', {
             method: 'POST',
@@ -35,20 +35,24 @@ const login = createAsyncThunk('login', async (formData) => {
             },
             body: JSON.stringify(formData),
         });
+
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+            const errorData = await response.json();
+            throw new Error(errorData.message);
         }
+
         const data = await response.json();
         console.log('Usuario autenticado:', data);
-        localStorage.setItem('token', data.token)
-        localStorage.setItem('userData', data.userData)
-        return data.token
-
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('userData', data.userData);
+        return data.token;
     } catch (error) {
-        console.error('Error with singIn:', error);
-        return []
+        console.error('Error with Login:', error);
+        return {
+            error: error.message,
+        };
     }
-})
+});
 
 const actions = { signUp, login }
 export default actions

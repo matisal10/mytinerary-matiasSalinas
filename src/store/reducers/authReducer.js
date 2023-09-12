@@ -3,7 +3,8 @@ import authActions from '../actions/authActions.js'
 const {signUp, login} = authActions
 
 const initialState = {
-    user: {}
+    user: {},
+    error:''
 }
 
 const authReducer = createReducer(initialState,
@@ -25,7 +26,7 @@ const authReducer = createReducer(initialState,
             })
 
             .addCase(login.fulfilled, (state, action) => {
-                const newState = { ...state, user: action.payload, loadingLogin: false }
+                const newState = { ...state, user: action.payload,error: action.payload.error,loadingLogin: false }
                 return newState
             })
 
@@ -34,8 +35,8 @@ const authReducer = createReducer(initialState,
                 return newState
             })
 
-            .addCase(login.rejected, (state) => {
-                const newState = { ...state, loadingLogin: false }
+            .addCase(login.rejected, (state,action) => {
+                const newState = { ...state,error: action.payload.error, loadingLogin: false }
                 return newState
             })
 

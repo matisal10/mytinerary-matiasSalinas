@@ -155,11 +155,16 @@ const Register = () => {
             password,
             country: selectedCountry,
         };
-        await dispatch(signUp(dataForm))
-        const token = localStorage.getItem('token')
-        if (token) {
-            navigate('/')
+        try {
+            await dispatch(signUp(dataForm));
+            const token = localStorage.getItem('token')
+            if (token) {
+                navigate('/')
+            }
+        } catch (error) {
+            console.error('Error en el componente:', error.message);
         }
+
 
     };
 
